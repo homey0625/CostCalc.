@@ -1,0 +1,25 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"\nimport html.parser, sys\ntry:\n    html.parser.HTMLParser().feed(open('index.html').read())\n    print('HTML syntax OK')\nexcept Exception as e:\n    print(f'HTML syntax ERROR: {e}', file=sys.stderr)\n    sys.exit(1)\n\" 2>&1 || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '--- Claude finished. index.html line count:' && wc -l index.html 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}
